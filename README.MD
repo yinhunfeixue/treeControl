@@ -43,6 +43,7 @@
     |equalFunction|匹配函数|Function|
 
     `equalFunction`的参数分别为
+    
     | 参数名称 | 描述 | 类型 |
     |-|-|-|
     |node|结点|Object|
