@@ -10,7 +10,7 @@ class TreeControl {
    * @param {String|Function} dataGetter 获取结点值的方法，为字符串或(node)=>object的函数
    * @param {String|Function} childrenGetter 获取结点子结点列表的方法，为字符串或(node)=>object的函数
    */
-  constructor(dataGetter = "value", childrenGetter = "children") {
+  constructor(dataGetter = "value", childrenGetter = "children", childrenCreater = 'children') {
     if (!dataGetter) {
       throw new Error('dataGetter need value');
     }
@@ -20,6 +20,7 @@ class TreeControl {
     else {
       this.dataGetter = dataGetter;
       this.childrenGetter = childrenGetter;
+      this.childrenCreater = childrenCreater;
     }
   }
 
@@ -44,6 +45,45 @@ class TreeControl {
       return chain[chain.length - 2];
     }
     return null;
+  }
+
+  addAt(tree, equalFunction, child, index = -1) {
+    let node = this.search(tree, equalFunction);
+    let children = this.getChildren(node);
+    if (!children) {
+      children = this._createEmptyChildren(node);
+    }
+
+    if (children) {
+      let realIndex = Math.max(0, Math.min(children.length, index));
+      children[realIndex] = child;
+    }
+  }
+
+  remove(tree, equalFunction) {
+    this._removeInner(tree, equalFunction);
+  }
+
+  /**
+   * 
+   * @param {Array} tree 
+   * @param {*} equalFunction 
+   */
+  _removeInner(tree, equalFunction, parent = null) {
+    if (tree) {
+      //遍历结点
+      for (let i = 0; i < tree.length; i++) {
+        let node = tree[i];
+        //如果当前结点符合被删除的条件，则删除；不符合，则递归子结点
+        if (equalFunction(node, i, parent)) {
+          tree.splice(i, 1);
+          i--;
+        }
+        else {
+          this._removeInner(this.getChildren(node), equalFunction, node);
+        }
+      }
+    }
   }
 
   /**
@@ -122,7 +162,7 @@ class TreeControl {
       let result = [];
       for (let i = 0; i < tree.length; i++) {
         let node = tree[i];
-        let children = this.map(this._getChildren(node), mapFunction, node);
+        let children = this.map(this.getChildren(node), mapFunction, node);
         let newNode = mapFunction(node, i, parent, children);
         result.push(newNode);
       }
@@ -149,7 +189,7 @@ class TreeControl {
           return [node];
         }
         else {
-          let children = this._getChildren(node);
+          let children = this.getChildren(node);
           if (children) {
             let childResult = this._searchChainInner(children, equalFunction, node);
             if (childResult) {
@@ -177,17 +217,17 @@ class TreeControl {
       for (let i = 0; i < tree.length; i++) {
         let node = tree[i];
         forEachFunction(node, i, parent);
-        this._forEachInner(this._getChildren(node), forEachFunction);
+        this._forEachInner(this.getChildren(node), forEachFunction);
       }
     }
     return null;
   }
 
   /**
-  * @private
+  * 获取结点的值
   * @param {*} node 
   */
-  _getNodeData(node) {
+  getNodeData(node) {
     if (this.dataGetter instanceof Function) {
       return this.dataGetter(node);
     }
@@ -197,10 +237,10 @@ class TreeControl {
   }
 
   /**
-   * @private
+   * 获取结点的子结点列表
    * @param {*} node 
    */
-  _getChildren(node) {
+  getChildren(node) {
     if (this.childrenGetter instanceof Function) {
       return this.childrenGetter(node);
     }
@@ -208,4 +248,16 @@ class TreeControl {
       return node[this.childrenGetter];
     }
   }
+
+  _createEmptyChildren(node) {
+    if (this.childrenCreater instanceof Function) {
+      return this.childrenCreater(node);
+    }
+    else {
+      node[this.childrenCreater] = [];
+      return node[this.childrenCreater];
+    }
+  }
 }
+
+module.exports = TreeControl;
