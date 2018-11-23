@@ -44,13 +44,13 @@
     |-|-|-|
     |dataGetter|获取结点值的方法，如果是字符串，则node[dataGetter]表示结点的值；如果是函数，则返回值表示结点的值|String\|(node)=>Object|
     |childrenGetter|获取子结点列表的方法，如果是字符串，则node[dataGetter]表示子结点列表；如果是函数，则返回值表示子结点列表|String\|(node)=>Array|
-    |childrenCreater|给结点添加子结点时，如果子列表不存在，使用此属性创建子列表|String\|(node)=>Array
+    |childrenCreater|给结点添加子结点时，如果子列表不存在，使用此属性创建子列表|String\|(node)=>Array
 
     **childrenCreater**的说明
     
     此属性仅在**添加子结点，且有结点无子列表属性**时有用，如果不使用添加操作，此属性可忽略
 
-    如果childrenCreater设置为字符串（默认为`'children'`)，给结点创建初始化的子列表时，将使用node[childrenCreater] = []; 
+    如果childrenCreater设置为字符串（默认为`'children'`)，给结点创建初始化的子列表时，将使用node[childrenCreater] = []; 
 
     如果为函数，通常形式如下，1、指定结点的一个属性为空数组，2、返回此数组
     ```
@@ -59,7 +59,7 @@
       return node.customChilren;
     }
     ```
-    但是，要注意的是，childrenCreater和childrenGetter必须匹配，即通过`childrenGetter`可以获取到`childrenCreater`创建的值
+    但是，要注意的是，childrenCreater和childrenGetter必须匹配，即通过`childrenGetter`可以获取到`childrenCreater`创建的值
 
 
 1.  `search(tree, equalFunction)=>Object`--搜索满足指定条件的第一个结点，如果要获取满足条件所有结点，请使用find
