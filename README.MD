@@ -40,8 +40,8 @@
     
     | 参数名称 | 描述 | 类型 |
     |-|-|-|
-    |dataGetter|获取结点值的方法，如果是字符串，则node[dataGetter]表示结点的值；如果是函数，则返回值表示结点的值|String\|(node)=>Object|
-    |childrenGetter|获取子结点列表的方法，如果是字符串，则node[dataGetter]表示子结点列表；如果是函数，则返回值表示子结点列表|String\|(node)=>Array|
+    |dataGetter|获取结点值的方法，如果是字符串，则node[dataGetter]表示结点的值；如果是函数，则返回值表示结点的值|String\|(node)=>Object|
+    |childrenGetter|获取子结点列表的方法，如果是字符串，则node[dataGetter]表示子结点列表；如果是函数，则返回值表示子结点列表|String\|(node)=>Array|
 
 1.  `search(tree, equalFunction)=>Object`--搜索满足指定条件的第一个结点，如果要获取满足条件所有结点，请使用find
 
@@ -81,7 +81,7 @@
       return result.children = newChildren;
     }
     ```
-    这样做的目的是可以更灵活的设置新树的结构
+    这样做的目的是可以更灵活的设置新树的结构
     + `mapFunction(oldNode, index, oldParent, newChildren)=>object`，旧结点的处理函数，
 
     | 参数名称 | 描述 | 类型 |
@@ -111,8 +111,8 @@
 以下方数据为例，写了几个示例
 
 #### 示例数据
-注意观察下方数据
-有的项的值放在**otherValue**属性中，有的项的值直接平铺在结点本身的属性中
+注意观察下方数据
+有的项的值放在**otherValue**属性中，有的项的值直接平铺在结点本身的属性中
 
 有的项的子列表放在**childList**属性中，有的项的子列表放在**otherChildList**属性中
 ```
@@ -182,7 +182,7 @@ let control = new TreeControl(
 );
 ```
 
-创建完成后，可使用控制器进行操作
+创建完成后，可使用控制器进行操作
 
 例如要搜索**x===22且序号是1**的结点
 
@@ -194,7 +194,7 @@ let node = control.search(tree, (node, i, parent) => {
 console.log(node.id);    //6
 ```
 
-如果**只需要x===22**，在匹配函数中，去掉i === 1即可，代码如下
+如果**只需要x===22**，在匹配函数中，去掉i === 1即可，代码如下
 ```
 let node = control.search(tree, (node, i, parent) => {
   return node.x === 22;
