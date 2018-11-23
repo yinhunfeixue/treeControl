@@ -35,6 +35,14 @@
 
 在以上的基础上，实现以下方法
 
+## 方法
+1. `new TreeControl(dataGetter, childrenGetter)`--构造器，必需指定获取结点值和子结点列表的方法
+    
+    | 参数名称 | 描述 | 类型 |
+    |-|-|-|
+    |dataGetter|获取结点值的方法，如果是字符串，则node[dataGetter]表示结点的值；如果是函数，则返回值表示结点的值|String\|(node)=>Object|
+    |childrenGetter|获取子结点列表的方法，如果是字符串，则node[dataGetter]表示子结点列表；如果是函数，则返回值表示子结点列表|String\|(node)=>Array|
+
 1.  `search(tree, equalFunction)=>Object`--搜索满足指定条件的第一个结点，如果要获取满足条件所有结点，请使用find
 
     | 参数名称 | 描述 | 类型 |
@@ -100,4 +108,97 @@
 
 
 ## 示例
+以下方数据为例，写了几个示例
 
+#### 示例数据
+注意观察下方数据
+有的项的值放在**otherValue**属性中，有的项的值直接平铺在结点本身的属性中
+
+有的项的子列表放在**childList**属性中，有的项的子列表放在**otherChildList**属性中
+```
+let tree = [
+  {
+    id: 1,
+    x: 1,
+    y: 1,
+    childList: [
+      {
+        id: 2,
+        x: 11,
+        y: 11
+      },
+      {
+        id: 3,
+        x: 12,
+        y: 12,
+      }
+    ],
+  },
+
+  {
+    id: 4,
+    x: 2,
+    y: 2,
+    childList: [
+      {
+        id: 5,
+        x: 22,
+        y: 21
+      },
+      {
+        id: 6,
+        x: 22,
+        y: 22,
+        otherChildList: [
+          {
+            otherValue: {
+              id: 7,
+              x: 221,
+              y: 222,
+            },
+          }
+        ],
+      }
+    ],
+  }
+];
+```
+#### 创建树控制对象
+因为控制对象不确定树的结构，所以创建时，需要告诉控制对象两项要素
+1. 获取节点值的方法
+2. 获取子节点列表的方法
+
+对于上述数据，控制对象如下
+```
+let control = new TreeControl(
+  (node) => {
+    //获取结点值的方法，优先从node.otherValue获取值，或者结点本身就是值
+    return node.otherValue || node;
+  },
+  (node) => {
+    //获取子结点列表的方法，优先从node.childList中获取，如果没有，则从node.otherChildList中获取
+    return node.childList || node.otherChildList;
+  }
+);
+```
+
+创建完成后，可使用控制器进行操作
+
+例如要搜索**x===22且序号是1**的结点
+
+```
+let node = control.search(tree, (node, i, parent) => {
+  return node.x === 22 && i === 1;
+});
+
+console.log(node.id);    //6
+```
+
+如果**只需要x===22**，在匹配函数中，去掉i === 1即可，代码如下
+```
+let node = control.search(tree, (node, i, parent) => {
+  return node.x === 22;
+});
+
+console.log(node.id);   //5
+```

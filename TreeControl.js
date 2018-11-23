@@ -1,5 +1,7 @@
 /**
  * 一个通用的树结构操作器，对源数据的结构没有要求
+ * @author yinhunfeixue
+ * @email yinhunfeixue@163.com
  */
 class TreeControl {
 
