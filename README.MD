@@ -42,8 +42,8 @@
     |tree|树数据|Array|
     |equalFunction|匹配函数|Function|
 
-    `equalFunction`的参数分别为
-    
+    `equalFunction` 的参数依次为
+
     | 参数名称 | 描述 | 类型 |
     |-|-|-|
     |node|结点|Object|
@@ -96,3 +96,8 @@
 
 1. `remove(tree, equalFunction, count = 0)`--删除指定条件的结点，可限制删除的数量（默认全部删除)
     + bool equalFunction(node, index, parent)
+
+
+
+## 示例
+
