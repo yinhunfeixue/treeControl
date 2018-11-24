@@ -1,11 +1,46 @@
 
 # 一个通用的树结构操作器，对源数据的结构没有要求
 
-## 使用方法
+# 基本用法
 
-下载TreeControl.js，按使用环境做修改即可
-1. 网页加载，删除最后的module.explor =...., 用script标签引用即可
-2. nodejs环境下，可直接使用
+1. **引入代码**
+
+    下载TreeControl.js，按使用环境做修改即可
+    1. 网页加载，删除最后的module.explor =...., 用script标签引用即可
+    2. nodejs环境下，可直接使用
+
+2. **使用**
+```
+let tree = [
+  {
+    value: {
+      id: 1
+    },
+    children: [
+      {
+        id: 11
+      },
+      {
+        id: 12
+      },
+      {
+        id: 13,
+        x: 1
+      }
+    ],
+  },
+  {
+    id: 2
+  }
+];
+
+let control = new TreeControl('value', 'children');
+let node = control.search(tree, (node) => node.id == 13);
+
+console.log(JSON.stringify(node, null, 2));
+```
+
+# 详解
 
 ## 树的定义
 我们定义一个树结点，有几个要素
