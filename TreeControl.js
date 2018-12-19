@@ -47,6 +47,28 @@ class TreeControl {
     return null;
   }
 
+  /**
+   * 获取满足指定条件的第一个结点在父结点子列表中的位置，如果无父结点，或结点不存在，返回-1
+   * @param {*} tree 树
+   * @param {*} equalFunction 匹配函数，格式为(node, index, parentNode)=>bool
+   * 
+   * @return {Number} 指定条件的结点所在的位置
+   */
+  getIndex(tree, equalFunction) {
+    let parent = this.searchParent(tree, equalFunction);
+    if (parent) {
+      let children = this.getChildren(parent);
+      for (let i = 0; i < children.length; i++) {
+        if (equalFunction(children[i], i, parent)) {
+          return i;
+        }
+      }
+    }
+    else {
+      return -1;
+    }
+  }
+
   addAt(tree, equalFunction, child, index = -1) {
     let node = this.search(tree, equalFunction);
     let children = this.getChildren(node);
@@ -98,7 +120,7 @@ class TreeControl {
   /**
    * 遍历树结点，并对每个结点执行回调函数
    * @param {Array} tree 树
-   * @param {Function} forEachFunction 回调函数，格式为(node, index, parentNode)=>bool
+   * @param {Function} forEachFunction 回调函数，格式为(node, index, parentNode)=>void
    */
   forEach(tree, forEachFunction) {
     this._forEachInner(tree, forEachFunction);
@@ -178,6 +200,8 @@ class TreeControl {
    * @param {*} parent 父结点
    * 
    * @private
+   * 
+   * @return {Array} 从根结点当符合条件的结点的数组
    */
   _searchChainInner(tree, equalFunction, parent = null) {
     if (tree) {
@@ -239,6 +263,8 @@ class TreeControl {
   /**
    * 获取结点的子结点列表
    * @param {*} node 
+   * 
+   * @return {Array}
    */
   getChildren(node) {
     if (this.childrenGetter instanceof Function) {

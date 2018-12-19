@@ -27,4 +27,6 @@ let tree = [
 let control = new TreeControl('value', 'children');
 let node = control.search(tree, (node) => node.id == 13);
 
+
+console.log(control.getIndex(tree, (node) => node.id === 13));
 console.log(JSON.stringify(node, null, 2));

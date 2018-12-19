@@ -1,6 +1,11 @@
 
 # 一个通用的树结构操作器，对源数据的结构没有要求
 
+```
+let control = new TreeControl('value', 'children');
+let node = control.search(tree, (node) => node.id == 13);
+```
+
 # 基本用法
 
 1. **引入代码**
@@ -158,7 +163,11 @@ console.log(JSON.stringify(node, null, 2));
     |-|-|-|
     | tree | 树数据 | Array |
 
-
+1. `getIndex(tree, equalFunction)=>Number`--获取满足指定条件的第一个结点在父结点子列表中的位置
+    | 参数名称 | 描述 | 类型 |
+    |-|-|-|
+    | tree | 树数据 | Array |
+    |equalFunction|匹配函数|(node, index, parent)=>bool|
 1. `addAt(tree, equalFunction, child, index = -1)`--在指定条件的结点的子结点的指定位置插入新结点，默认插入到子结点集合的最后。如果指定位置超出范围（例如小于0，大于最大长度），会自动调整到有效小范围内
 
      | 参数名称 | 描述 | 类型 |
@@ -174,6 +183,9 @@ console.log(JSON.stringify(node, null, 2));
     |-|-|-|
     |tree|树结构数据|Array|
     |equalFunction|匹配函数，将在符合此函数的第一个结点下插入子结点|(node, index, parent)=>bool|
+
+
+
 
 
 
