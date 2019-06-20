@@ -31,7 +31,7 @@ class TreeControl {
    */
   search(tree, equalFunction) {
     let chain = this._searchChainInner(tree, equalFunction);
-    return chain ? chain[chain.length - 1] : null;
+    return chain && chain.length ? chain[chain.length - 1] : null;
   }
 
   /**
@@ -64,21 +64,21 @@ class TreeControl {
         }
       }
     }
-    else {
-      return -1;
-    }
+    return -1;
   }
 
   addAt(tree, equalFunction, child, index = -1) {
     let node = this.search(tree, equalFunction);
-    let children = this.getChildren(node);
-    if (!children) {
-      children = this._createEmptyChildren(node);
-    }
+    if (node) {
+      let children = this.getChildren(node);
+      if (!children) {
+        children = this._createEmptyChildren(node);
+      }
 
-    if (children) {
-      let realIndex = Math.max(0, Math.min(children.length, index));
-      children[realIndex] = child;
+      if (children) {
+        let realIndex = Math.max(0, Math.min(children.length, index));
+        children[realIndex] = child;
+      }
     }
   }
 
